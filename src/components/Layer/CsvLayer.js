@@ -26,8 +26,6 @@ const CsvLayer = ({ visible }) => {
 
 				const geoJsonObjects = parser.parse();
 
-				console.log(geoJsonObjects);
-
 				for (let i = 0; i < geoJsonObjects.features.length; ++i) {
 					geoJsonObjects.features[i].geometry.coordinates = fromLonLat(
 						geoJsonObjects.features[i].geometry.coordinates
@@ -44,7 +42,7 @@ const CsvLayer = ({ visible }) => {
 				});
 
 				runInAction(() => {
-					MapStore.getMap().addLayer(vectorLayer);
+					MapStore.addLayer(vectorLayer);
 					MapStore.setOnClick(vectorLayer);
 				})
 			})

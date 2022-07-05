@@ -2,10 +2,10 @@ import {makeAutoObservable} from "mobx";
 import {Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
-import {fromLonLat} from "ol/proj";
 
 class MapStore {
 	map = null;
+	layers = [];
 
 	constructor() {
 		makeAutoObservable(this);
@@ -18,6 +18,19 @@ class MapStore {
 		}
 
 		this.currentZoom = localStorage.getItem("zoom");
+	}
+
+	addLayer = (layer) => {
+		this.layers.push(layer);
+		this.map.addLayer(layer);
+	}
+
+	getLayers = () => {
+		return this.layers;
+	}
+
+	changeLayerVisibility = (visible, layer) => {
+		layer.setVisible(visible);
 	}
 
 	getCenter = () => {

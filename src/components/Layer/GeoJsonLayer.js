@@ -4,8 +4,8 @@ import {runInAction} from "mobx";
 import {fromLonLat} from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import {GeoJSON} from "ol/format"
-	;
+import {GeoJSON} from "ol/format";
+
 import MapStore from "../../stores/MapStore";
 import Parser from "../../utils/Parser/Parser";
 import fromTextToJson from "../../utils/Parser/fromTextToJson";
@@ -37,7 +37,7 @@ const GeoJsonLayer = () => {
 				});
 
 				runInAction(() => {
-					MapStore.getMap().addLayer(vectorLayer);
+					MapStore.addLayer(vectorLayer);
 					MapStore.setOnClick(vectorLayer);
 				})
 			})
