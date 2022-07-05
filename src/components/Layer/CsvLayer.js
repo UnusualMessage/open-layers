@@ -1,3 +1,4 @@
+import {useEffect, useState} from "react";
 import {fromLonLat} from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";
@@ -10,39 +11,44 @@ import fromCsvToJson from "../../utils/Parser/fromCsvToJson";
 import fromJsonToGeoJson from "../../utils/Parser/fromJsonToGeoJson";
 import {runInAction} from "mobx";
 
-const CsvLayer = () => {
-	fetch('portals.csv')
-		.then((response) => {
-			return response.text();
-		})
-		.then((result) => {
-			const parser = new Parser(result, fromCsvToJson);
-			let objects = parser.parse();
+const CsvLayer = ({ visible }) => {
+	useEffect(() => {
+		fetch('portals.csv')
+			.then((response) => {
+				return response.text();
+			})
+			.then((result) => {
+				const parser = new Parser(result, fromCsvToJson);
+				let objects = parser.parse();
 
-			parser.setStrategy(fromJsonToGeoJson);
-			parser.setFile(objects);
+				parser.setStrategy(fromJsonToGeoJson);
+				parser.setFile(objects);
 
-			const geoJsonObjects = parser.parse();
+				const geoJsonObjects = parser.parse();
 
-			console.log(geoJsonObjects);
+				console.log(geoJsonObjects);
 
-			for (let i = 0; i < geoJsonObjects.features.length; ++i) {
-				geoJsonObjects.features[i].geometry.coordinates = fromLonLat(
-					geoJsonObjects.features[i].geometry.coordinates
-				);
-			}
+				for (let i = 0; i < geoJsonObjects.features.length; ++i) {
+					geoJsonObjects.features[i].geometry.coordinates = fromLonLat(
+						geoJsonObjects.features[i].geometry.coordinates
+					);
+				}
 
-			const vectorSource = new VectorSource({
-				features: new GeoJSON().readFeatures(geoJsonObjects)
-			});
+				const vectorSource = new VectorSource({
+					features: new GeoJSON().readFeatures(geoJsonObjects)
+				});
 
-			const vectorLayer = new VectorLayer({
-				source: vectorSource,
-				style: styleFunction
-			});
+				const vectorLayer = new VectorLayer({
+					source: vectorSource,
+					style: styleFunction
+				});
 
-			MapStore.getMap().addLayer(vectorLayer);
-		})
+				runInAction(() => {
+					MapStore.getMap().addLayer(vectorLayer);
+					MapStore.setOnClick(vectorLayer);
+				})
+			})
+	}, []);
 	return(
 		<>
 		</>

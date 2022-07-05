@@ -11,7 +11,13 @@ const MultiLayerMap = ({ children }) => {
 
 	useEffect(() => {
 		if (MapStore.getMap() == null) {
-			MapStore.initMap(mapRef.current, defaultCenter, defaultZoom);
+			let zoom = MapStore.getZoom();
+			let center = MapStore.getCenter();
+
+			zoom = zoom ? zoom : defaultZoom;
+			center = center ? center : defaultCenter;
+
+			MapStore.initMap(mapRef.current, center, zoom);
 		}
 	}, []);
 

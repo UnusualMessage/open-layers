@@ -36,7 +36,10 @@ const GeoJsonLayer = () => {
 					style: styleFunction
 				});
 
-				MapStore.getMap().addLayer(vectorLayer);
+				runInAction(() => {
+					MapStore.getMap().addLayer(vectorLayer);
+					MapStore.setOnClick(vectorLayer);
+				})
 			})
 	}, [])
 
