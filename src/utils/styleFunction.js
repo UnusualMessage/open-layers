@@ -1,9 +1,9 @@
 import CircleStyle from "ol/style/Circle";
-import {Stroke, Style} from "ol/style";
+import {Fill, Stroke, Style} from "ol/style";
 
 const image = new CircleStyle({
 	radius: 10,
-	fill: null,
+	fill: new Fill({color: "red"}),
 	stroke: new Stroke({ color: "red", width: 2 })
 });
 

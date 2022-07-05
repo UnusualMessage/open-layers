@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {fromLonLat} from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";

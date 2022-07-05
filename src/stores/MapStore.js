@@ -2,6 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
+import {fromLonLat} from "ol/proj";
 
 class MapStore {
 	map = null;
@@ -71,11 +72,32 @@ class MapStore {
 
 				if (feature !== undefined) {
 					const view = this.map.getView();
-					view.setCenter(feature.getGeometry().flatCoordinates);
-					view.setZoom(20);
+					view.animate({
+						center: feature.getGeometry().flatCoordinates,
+						zoom: 20,
+						duration: 2000,
+					})
 				}
 			})
 		});
+	}
+
+	startTour = (objects) => {
+		const view = this.map.getView();
+
+		const to = (view, center) => {
+			view.animate({
+				center: center,
+				zoom: 20,
+				duration: 2000,
+			})
+		};
+
+		for (let i = 0; i < objects.features.length; ++i) {
+			setTimeout(() => {
+				to(view, objects.features[i].geometry.coordinates);
+			}, 10);
+		}
 	}
 
 	getMap = () => {

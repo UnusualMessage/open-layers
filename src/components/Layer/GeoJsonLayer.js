@@ -1,4 +1,6 @@
 import {useEffect} from "react";
+import {observer} from "mobx-react-lite";
+import {runInAction} from "mobx";
 import {fromLonLat} from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
@@ -8,8 +10,6 @@ import MapStore from "../../stores/MapStore";
 import Parser from "../../utils/Parser/Parser";
 import fromTextToJson from "../../utils/Parser/fromTextToJson";
 import styleFunction from "../../utils/styleFunction";
-import {observer} from "mobx-react-lite";
-import {runInAction} from "mobx";
 
 const GeoJsonLayer = () => {
 	useEffect(() => {
