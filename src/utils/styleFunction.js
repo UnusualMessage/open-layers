@@ -1,10 +1,10 @@
-import CircleStyle from "ol/style/Circle";
-import {Fill, Stroke, Style} from "ol/style";
+import {Icon, Style} from "ol/style";
 
-const image = new CircleStyle({
-	radius: 10,
-	fill: new Fill({color: "red"}),
-	stroke: new Stroke({ color: "red", width: 2 })
+const image = new Icon({
+	anchor: [0.5, 46],
+	anchorXUnits: 'fraction',
+	anchorYUnits: 'pixels',
+	src: 'icon.png',
 });
 
 const styles = {
