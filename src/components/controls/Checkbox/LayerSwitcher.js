@@ -2,6 +2,8 @@ import {useState} from "react";
 import {runInAction} from "mobx";
 import {observer} from "mobx-react-lite";
 
+import css from "./switcher.module.scss";
+
 import MapStore from "../../../stores/MapStore";
 
 const LayerSwitcher = ({text, layerId, label}) => {
@@ -15,7 +17,7 @@ const LayerSwitcher = ({text, layerId, label}) => {
 	}
 
 	return(
-		<div>
+		<div className={`${css.item}`}>
 			<label htmlFor={label}>{text}</label>
 			<input type={"checkbox"} id={label} checked={visible} onChange={onChange}/>
 		</div>

@@ -1,6 +1,6 @@
 import {observer} from "mobx-react-lite";
 
-import css from "../../App.module.scss";
+import css from "./switcher.module.scss";
 
 import LayerSwitcher from "./LayerSwitcher";
 
