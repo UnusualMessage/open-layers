@@ -11,6 +11,7 @@ import {geoJsonId, csvId, geoJsonUrl, csvUrl} from "../data/mapConfig";
 import Controls from "./controls";
 import PresentationButton from "./controls/PresentationButton";
 import FeatureOverlay from "./Overlay/FeatureOverlay";
+import Filter from "./controls/Filter";
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 			<Controls>
 				<Switcher/>
 				<PresentationButton/>
+				<Filter/>
 			</Controls>
 			<MultiLayerMap>
 				<Layer strategies={[fromTextToJson]} sourceUrl={geoJsonUrl} layerId={geoJsonId}/>

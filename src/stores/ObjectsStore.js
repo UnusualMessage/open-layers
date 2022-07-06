@@ -1,14 +1,24 @@
-import {makeAutoObservable, runInAction} from "mobx";
+import {makeAutoObservable} from "mobx";
 import Parser from "../utils/Parser/Parser";
 import FileService from "../services/FileService";
+import matches from "../utils/matches";
 
 class ObjectsStore {
 	constructor() {
-		makeAutoObservable(this);
-
 		this.service = FileService;
 		this.objects = [];
-		this.current = {};
+		this.filter = "";
+
+		makeAutoObservable(this);
+	}
+
+	setFilter = (filter) => {
+		this.filter = filter;
+	}
+
+	getObjects = () => {
+		const features = this.objects[0].object.features;
+		return features.filter(feature => matches(this.filter, feature.properties.name));
 	}
 
 	getObjectById = (id) => {
@@ -17,21 +27,15 @@ class ObjectsStore {
 
 	readObjects = async (url, parsingStrategies, id) => {
 		try {
-			const file = await this.service.get(url);
+			let object = await this.service.get(url);
+			for (let i = 0; i < parsingStrategies.length; ++i) {
+				const parser = new Parser(object, parsingStrategies[i]);
+				object = parser.parse();
+			}
 
-			runInAction(() => {
-				let object = file;
-				for (let i = 0; i < parsingStrategies.length; ++i) {
-					const parser = new Parser(object, parsingStrategies[i]);
-					object = parser.parse();
-				}
-
-				this.objects.push({
-					id: id,
-					object: object
-				});
-
-				this.current = object;
+			this.objects.push({
+				id: id,
+				object: object
 			});
 
 		} catch(error) {

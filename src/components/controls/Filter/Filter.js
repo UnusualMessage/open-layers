@@ -1,7 +1,13 @@
+import {runInAction} from "mobx";
+
 import css from "./filter.module.scss";
+import ObjectsStore from "../../../stores/ObjectsStore";
 
 const Filter = () => {
-	const onInput = () => {
+	const onInput = (e) => {
+		runInAction(() => {
+			ObjectsStore.setFilter(e.target.value);
+		})
 	}
 
 	return(
