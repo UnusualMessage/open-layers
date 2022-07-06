@@ -1,2 +1,2 @@
-import GeoJsonLayer from "./GeoJsonLayer";
-export default GeoJsonLayer;
+import Layer from "./Layer";
+export default Layer;

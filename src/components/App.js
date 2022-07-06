@@ -16,9 +16,10 @@ function App() {
 				<LayerSwitcher label={"csv"} text={"Слой CSV"} layer={MapStore.getLayers()[1]}/>
 			</div>
 			<MultiLayerMap>
-				<GeoJsonLayer/>
-				<CsvLayer/>
+				<Layer strategies={[fromTextToJson]} sourceUrl={'bars.geojson'} />
+				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={'portals.csv'} />
 			</MultiLayerMap>
+			<ObjectsTable/>
 		</>
 	);
 }
