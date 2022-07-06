@@ -2,11 +2,11 @@ import {observer} from "mobx-react-lite";
 
 import css from "./button.module.scss";
 import MapStore from "../../../stores/MapStore";
-import ObjectsStore from "../../../stores/ObjectsStore";
+import {csvId, geoJsonId} from "../../../data/mapConfig";
 
 const PresentationButton = () => {
 	const onClick = () => {
-		MapStore.startTour(ObjectsStore.objects[0].object);
+		MapStore.startTours([geoJsonId, csvId]);
 	}
 
 	return(

@@ -2,6 +2,10 @@ import {makeAutoObservable} from "mobx";
 import {Map} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
+import VectorSource from "ol/source/Vector";
+import {GeoJSON} from "ol/format";
+
+import ObjectsStore from "./ObjectsStore";
 
 class MapStore {
 	constructor() {
@@ -9,6 +13,21 @@ class MapStore {
 
 		this.map = null;
 		this.layers = [];
+	}
+
+	getLayerById = (id) => {
+		return this.layers.find(layer => layer.id === id).layer;
+	}
+
+	filterFeatures = (filter) => {
+		for (let i = 0; i < this.layers.length; ++i) {
+			const source = new VectorSource({
+				features: new GeoJSON().readFeatures(ObjectsStore.getObjectByIndex(i, filter))
+			});
+
+			this.layers[i].layer.setSource(source);
+		}
+
 	}
 
 	addLayer = (layer, layerId) => {
@@ -70,20 +89,45 @@ class MapStore {
 		});
 	}
 
-	startTour = (objects) => {
+	startTours = (ids) => {
+		for (let id of ids) {
+			this.startTour(id);
+		}
+	}
+
+	startTour = (layerId) => {
 		const view = this.map.getView();
 
-		const animation = [];
+		const layer = this.getLayerById(layerId);
 
-		for (let i = 0; i < objects.features.length; ++i) {
-			animation.push({
-				center: objects.features[i].geometry.coordinates,
-				zoom: 20,
-				duration: 2000
-			});
+		if (layer.getVisible() === false) {
+			return;
 		}
 
-		view.animate(...animation);
+		const features = layer.getSource().getFeatures();
+
+		const to = (index, limit) => {
+			if (index >= limit) {
+				return;
+			}
+
+			const callback = (complete) => {
+				if (complete) {
+					alert(`${index}-й готов`);
+					to(index + 1, limit);
+				}
+			}
+
+			this.map.getOverlayById(1).setPosition(features[index].getGeometry().flatCoordinates);
+
+			view.animate({
+				center: features[index].getGeometry().flatCoordinates,
+				zoom: 18,
+				duration: 5000
+			}, callback)
+		}
+
+		to(0, features.length);
 	}
 
 	getMap = () => {

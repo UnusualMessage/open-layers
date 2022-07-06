@@ -1,21 +1,24 @@
 import {runInAction} from "mobx";
+import {observer} from "mobx-react-lite";
 
 import css from "./filter.module.scss";
-import ObjectsStore from "../../../stores/ObjectsStore";
+import CurrentStateStore from "../../../stores/CurrentStateStore";
+import MapStore from "../../../stores/MapStore";
 
 const Filter = () => {
 	const onInput = (e) => {
 		runInAction(() => {
-			ObjectsStore.setFilter(e.target.value);
+			CurrentStateStore.setFilter(e.target.value);
+			MapStore.filterFeatures(CurrentStateStore.getFilter());
 		})
 	}
 
 	return(
 		<div className={`${css.filter}`}>
 			<label htmlFor={"filter"}>Поиск</label>
-			<input id={"filter"} placeholder={"name"} onInput={onInput}/>
+			<input id={"filter"} placeholder={"name"} onInput={onInput} value={CurrentStateStore.getFilter()}/>
 		</div>
 	)
 }
 
-export default Filter;
+export default observer(Filter);

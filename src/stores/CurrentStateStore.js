@@ -12,6 +12,9 @@ class CurrentStateStore {
 
 		this.currentZoom = localStorage.getItem("zoom");
 
+		this.filter = localStorage.getItem("filter");
+		this.filter = this.filter ? this.filter : "";
+
 		makeAutoObservable(this);
 	}
 
@@ -23,6 +26,15 @@ class CurrentStateStore {
 		}
 
 		return null;
+	}
+
+	getFilter = () => {
+		return this.filter;
+	}
+
+	setFilter = (filter) => {
+		this.filter = filter;
+		localStorage.setItem("filter", filter);
 	}
 
 	getCenter = () => {
