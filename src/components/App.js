@@ -7,14 +7,15 @@ import Layer from "./Layer";
 import fromTextToJson from "../utils/Parser/fromTextToJson";
 import fromCsvToJson from "../utils/Parser/fromCsvToJson";
 import fromJsonToGeoJson from "../utils/Parser/fromJsonToGeoJson";
+import {geoJsonId, csvId, geoJsonUrl, csvUrl} from "../data/mapConfig";
 
 function App() {
 	return (
 		<>
 			<Switcher/>
 			<MultiLayerMap>
-				<Layer strategies={[fromTextToJson]} sourceUrl={'bars.geojson'} layerId={"geo"}/>
-				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={'portals.csv'} layerId={"csv"}/>
+				<Layer strategies={[fromTextToJson]} sourceUrl={geoJsonUrl} layerId={geoJsonId}/>
+				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={csvUrl} layerId={csvId}/>
 			</MultiLayerMap>
 			<ObjectsTable/>
 		</>

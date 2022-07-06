@@ -1,13 +1,28 @@
+import {makeAutoObservable} from "mobx";
+
 class CurrentStateStore {
 	constructor() {
-		this.currentCenter = localStorage.getItem("center");
-
-		if (this.currentCenter != null) {
-			this.currentCenter = this.currentCenter.split(',');
-			this.currentCenter = this.currentCenter.map(coordinate => Number(coordinate));
+		this.layersState = JSON.parse(localStorage.getItem("layers"));
+		if (this.layersState == null) {
+			this.layersState = [];
 		}
 
+		this.currentCenter = localStorage.getItem("center");
+		this.currentCenter = this.fromStringToArray(this.currentCenter, Number);
+
 		this.currentZoom = localStorage.getItem("zoom");
+
+		makeAutoObservable(this);
+	}
+
+	fromStringToArray = (str, strategy) => {
+		if (str != null) {
+			str = str.split(',');
+			str = str.map(item => strategy(item));
+			return str;
+		}
+
+		return null;
 	}
 
 	getCenter = () => {
@@ -16,6 +31,25 @@ class CurrentStateStore {
 
 	getZoom = () => {
 		return this.currentZoom;
+	}
+
+	getLayerStateById = (id) => {
+		return this.layersState?.find(state => state.id === id)?.visible;
+	}
+
+	addLayerState = (visible, id) => {
+		const layersState = this.layersState?.find(state => state.id === id);
+
+		if (layersState != null) {
+			layersState.visible = visible;
+		} else {
+			this.layersState.push({
+				visible: visible,
+				id: id
+			})
+		}
+
+		localStorage.setItem("layers", JSON.stringify(this.layersState));
 	}
 
 	setCenter = (center) => {
