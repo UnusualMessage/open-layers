@@ -1,0 +1,13 @@
+.overlay {
+  background: white;
+  padding: 10px;
+  box-shadow: 2px 2px 10px black;
+  width: 200px;
+  border-radius: 5px;
+
+  .header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+  }
+}

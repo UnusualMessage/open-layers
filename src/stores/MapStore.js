@@ -19,9 +19,23 @@ class MapStore {
 		this.map.addLayer(layer);
 	}
 
+	addOverlay = (overlay) => {
+		this.map.addOverlay(overlay);
+	}
+
+	getOverlayById = (id) => {
+		return this.map.getOverlayById(id);
+	}
+
 	changeLayerVisibility = (visible, id) => {
 		const layer = this.layers.find(item => item.id === id).layer;
 		layer.setVisible(visible);
+	}
+
+	stopAnimation = () => {
+		const view = this.map.getView();
+
+		view.setZoom(view.getZoom());
 	}
 
 	initMap = (ref, view) => {
@@ -48,7 +62,9 @@ class MapStore {
 						center: feature.getGeometry().flatCoordinates,
 						zoom: 20,
 						duration: 2000,
-					})
+					});
+
+					this.map.getOverlayById(1).setPosition(feature.getGeometry().flatCoordinates);
 				}
 			})
 		});

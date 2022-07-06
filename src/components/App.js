@@ -10,6 +10,7 @@ import fromJsonToGeoJson from "../utils/Parser/fromJsonToGeoJson";
 import {geoJsonId, csvId, geoJsonUrl, csvUrl} from "../data/mapConfig";
 import Controls from "./controls";
 import PresentationButton from "./controls/PresentationButton";
+import FeatureOverlay from "./Overlay/FeatureOverlay";
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 				<Layer strategies={[fromTextToJson]} sourceUrl={geoJsonUrl} layerId={geoJsonId}/>
 				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={csvUrl} layerId={csvId}/>
 			</MultiLayerMap>
+			<FeatureOverlay/>
 			<ObjectsTable/>
 		</>
 	);
