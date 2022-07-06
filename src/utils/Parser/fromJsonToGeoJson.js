@@ -7,6 +7,10 @@ const fromJsonToGeoJson = (json) => {
 	for (let i = 0; i < json.length; ++i) {
 		const feature = {
 			type: "Feature",
+			properties: {
+
+			},
+
 			geometry: {
 				type: "Point",
 				coordinates: [
@@ -15,11 +19,21 @@ const fromJsonToGeoJson = (json) => {
 			}
 		}
 
+		for (let key of Object.keys(json[i])) {
+			if (key === "lon" || key === "lat") {
+				continue;
+			}
+			
+			feature.properties[key] = json[i][key];
+		}
+
 		feature.geometry.coordinates.push(json[i].lon);
 		feature.geometry.coordinates.push(json[i].lat);
 
 		result.features.push(feature);
+
 	}
+	console.log(result);
 
 	return result;
 }
