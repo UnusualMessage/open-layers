@@ -13,8 +13,8 @@ function App() {
 		<>
 			<Switcher/>
 			<MultiLayerMap>
-				<Layer strategies={[fromTextToJson]} sourceUrl={'bars.geojson'} />
-				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={'portals.csv'} />
+				<Layer strategies={[fromTextToJson]} sourceUrl={'bars.geojson'} layerId={"geo"}/>
+				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={'portals.csv'} layerId={"csv"}/>
 			</MultiLayerMap>
 			<ObjectsTable/>
 		</>

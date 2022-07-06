@@ -11,21 +11,25 @@ class MapStore {
 		this.layers = [];
 	}
 
-	addLayer = (layer) => {
-		this.layers.push(layer);
+	addLayer = (layer, layerId) => {
+		this.layers.push({
+			layer: layer,
+			id: layerId
+		});
 		this.map.addLayer(layer);
 	}
 
-	getLayerByIndex = (id) => {
+	getLayerById = (id) => {
 		if (this.layers.length === 0) {
 			return null
 		}
 
-		return this.layers[id];
+		return this.layers.find(layer => layer.id === id)?.layer;
 	}
 
 	changeLayerVisibility = (visible, id) => {
-		this.layers[id].setVisible(visible);
+		const layer = this.layers.find(item => item.id === id).layer;
+		layer.setVisible(visible);
 	}
 
 	initMap = (ref, view) => {

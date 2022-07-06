@@ -10,7 +10,7 @@ import ObjectsStore from "../../stores/ObjectsStore";
 import styleFunction from "../../utils/styleFunction";
 import MapStore from "../../stores/MapStore";
 
-const Layer = ({ sourceUrl, strategies }) => {
+const Layer = ({ sourceUrl, strategies, layerId }) => {
 	useEffect(() => {
 		runInAction(async () => {
 			await ObjectsStore.readFile(
@@ -35,7 +35,7 @@ const Layer = ({ sourceUrl, strategies }) => {
 				style: styleFunction
 			});
 
-			MapStore.addLayer(vectorLayer);
+			MapStore.addLayer(vectorLayer, layerId);
 			MapStore.setOnClick(vectorLayer);
 		})
 	}, [sourceUrl, strategies]);
