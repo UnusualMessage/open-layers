@@ -1,14 +1,15 @@
 import {useState} from "react";
 import {runInAction} from "mobx";
+import {observer} from "mobx-react-lite";
 
 import MapStore from "../../../stores/MapStore";
 
-const LayerSwitcher = ({text, layer, label}) => {
+const LayerSwitcher = ({text, layerId, label}) => {
 	const [visible, setVisible] = useState(true);
 
 	const onChange = () => {
 		runInAction(() => {
-			MapStore.changeLayerVisibility(!visible, layer);
+			MapStore.changeLayerVisibility(!visible, layerId);
 			setVisible(!visible);
 		})
 	}
@@ -21,4 +22,4 @@ const LayerSwitcher = ({text, layer, label}) => {
 	)
 }
 
-export default LayerSwitcher;
+export default observer(LayerSwitcher);

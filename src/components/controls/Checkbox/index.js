@@ -1,2 +1,2 @@
-import LayerSwitcher from "./LayerSwitcher";
-export default LayerSwitcher;
+import Switcher from "./Switcher";
+export default Switcher;

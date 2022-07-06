@@ -1,20 +1,17 @@
 import {observer} from "mobx-react-lite";
 
 import MultiLayerMap from "./MultiLayerMap";
-import GeoJsonLayer from "./Layer";
-import CsvLayer from "./Layer/CsvLayer";
-import LayerSwitcher from "./controls/Checkbox/LayerSwitcher";
-import MapStore from "../stores/MapStore";
-
-import css from './App.module.scss';
+import Switcher from "./controls/Checkbox";
+import ObjectsTable from "./ObjectsTable";
+import Layer from "./Layer";
+import fromTextToJson from "../utils/Parser/fromTextToJson";
+import fromCsvToJson from "../utils/Parser/fromCsvToJson";
+import fromJsonToGeoJson from "../utils/Parser/fromJsonToGeoJson";
 
 function App() {
 	return (
 		<>
-			<div className={`${css.switcher}`}>
-				<LayerSwitcher label={"geojson"} text={"Слой GeoJSON"} layer={MapStore.getLayers()[0]}/>
-				<LayerSwitcher label={"csv"} text={"Слой CSV"} layer={MapStore.getLayers()[1]}/>
-			</div>
+			<Switcher/>
 			<MultiLayerMap>
 				<Layer strategies={[fromTextToJson]} sourceUrl={'bars.geojson'} />
 				<Layer strategies={[fromCsvToJson, fromJsonToGeoJson]} sourceUrl={'portals.csv'} />
