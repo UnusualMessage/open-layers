@@ -33,7 +33,6 @@ const fromJsonToGeoJson = (json) => {
 		result.features.push(feature);
 
 	}
-	console.log(result);
 
 	return result;
 }
