@@ -15,7 +15,7 @@ class ObjectsStore {
 		return this.current
 	}
 
-	readFile = async (url, parsingStrategies) => {
+	readObjects = async (url, parsingStrategies, id) => {
 		try {
 			const file = await this.service.get(url);
 
@@ -26,7 +26,11 @@ class ObjectsStore {
 					object = parser.parse();
 				}
 
-				this.objects.push(object);
+				this.objects.push({
+					id: id,
+					object: object
+				});
+
 				this.current = object;
 			});
 

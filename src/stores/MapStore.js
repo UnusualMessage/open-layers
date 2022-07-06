@@ -19,14 +19,6 @@ class MapStore {
 		this.map.addLayer(layer);
 	}
 
-	getLayerById = (id) => {
-		if (this.layers.length === 0) {
-			return null
-		}
-
-		return this.layers.find(layer => layer.id === id)?.layer;
-	}
-
 	changeLayerVisibility = (visible, id) => {
 		const layer = this.layers.find(item => item.id === id).layer;
 		layer.setVisible(visible);
@@ -65,19 +57,17 @@ class MapStore {
 	startTour = (objects) => {
 		const view = this.map.getView();
 
-		const to = (view, center) => {
-			view.animate({
-				center: center,
-				zoom: 20,
-				duration: 2000,
-			})
-		};
+		const animation = [];
 
 		for (let i = 0; i < objects.features.length; ++i) {
-			setTimeout(() => {
-				to(view, objects.features[i].geometry.coordinates);
-			}, 10);
+			animation.push({
+				center: objects.features[i].geometry.coordinates,
+				zoom: 20,
+				duration: 2000
+			});
 		}
+
+		view.animate(...animation);
 	}
 
 	getMap = () => {

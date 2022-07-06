@@ -16,6 +16,7 @@ function App() {
 		<>
 			<Controls>
 				<Switcher/>
+				<PresentationButton/>
 			</Controls>
 			<MultiLayerMap>
 				<Layer strategies={[fromTextToJson]} sourceUrl={geoJsonUrl} layerId={geoJsonId}/>
