@@ -1,10 +1,8 @@
 import {Icon, Style} from "ol/style";
 
 const image = new Icon({
-	anchor: [0.5, 46],
-	anchorXUnits: 'fraction',
-	anchorYUnits: 'pixels',
-	src: 'icon.png',
+	anchor: [0.5, 0.5],
+	src: 'icon-1.png',
 });
 
 const styles = {
