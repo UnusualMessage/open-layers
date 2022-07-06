@@ -21,7 +21,7 @@ const Layer = ({ sourceUrl, strategies, layerId }) => {
 				layerId
 			);
 
-			const geoJsonObjects = ObjectsStore.getCurrent();
+			const geoJsonObjects = ObjectsStore.getObjectById(layerId);
 
 			for (let i = 0; i < geoJsonObjects.features.length; ++i) {
 				geoJsonObjects.features[i].geometry.coordinates = fromLonLat(

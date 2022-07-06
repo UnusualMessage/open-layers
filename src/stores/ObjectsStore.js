@@ -11,8 +11,8 @@ class ObjectsStore {
 		this.current = {};
 	}
 
-	getCurrent = () => {
-		return this.current
+	getObjectById = (id) => {
+		return this.objects.find(object => object.id === id).object;
 	}
 
 	readObjects = async (url, parsingStrategies, id) => {
