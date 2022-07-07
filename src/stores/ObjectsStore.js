@@ -4,6 +4,7 @@ import {fromLonLat} from "ol/proj";
 import Parser from "../utils/Parser/Parser";
 import FileService from "../services/FileService";
 import matches from "../utils/matches";
+import {enNameKey, ruNameKey} from "../data/mapConfig";
 
 class ObjectsStore {
 	constructor() {
@@ -46,8 +47,8 @@ class ObjectsStore {
 		featureCollection = featureCollection.filter(feature => {
 			const keys = Object.keys(feature.properties);
 			for (let key of keys) {
-				if (key === "name_ru" || key === "name_en") {
-					return matches(filter, feature.properties.name_en, feature.properties.name_ru)
+				if (key === ruNameKey || key === enNameKey) {
+					return matches(filter, feature.properties[enNameKey], feature.properties[ruNameKey])
 				}
 			}
 
@@ -60,8 +61,11 @@ class ObjectsStore {
 	readGroup = async (url, parsingStrategies, id) => {
 		try {
 			let file = await this.service.get(url);
+
+			const parser = new Parser();
 			for (let i = 0; i < parsingStrategies.length; ++i) {
-				const parser = new Parser(file, parsingStrategies[i]);
+				parser.setStrategy(parsingStrategies[i]);
+				parser.setFile(file)
 				file = parser.parse();
 			}
 
