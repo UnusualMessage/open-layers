@@ -4,10 +4,10 @@ import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";
+import {fromLonLat} from "ol/proj";
 
 import ObjectsStore from "./ObjectsStore";
-import {fromLonLat} from "ol/proj";
-import {overlayId} from "../data/mapConfig";
+import {latKey, lonKey, overlayId} from "../data/mapConfig";
 
 class MapStore {
 	constructor() {
@@ -18,7 +18,7 @@ class MapStore {
 	}
 
 	getLayerById = (id) => {
-		return this.map.getAllLayers().find(layer => layer.get("id") === id);
+		return this.layers.find(layer => layer.id === id)?.layer;
 	}
 
 	filterFeatures = (filter) => {
@@ -58,6 +58,16 @@ class MapStore {
 		layer.setVisible(visible);
 	}
 
+	isVisible = (id) => {
+		const layer = this.layers.find(item => item.id === id)?.layer;
+
+		if (layer === undefined) {
+			return false;
+		}
+
+		return layer.getVisible();
+	}
+
 	stopAnimation = () => {
 		const view = this.map.getView();
 
@@ -66,7 +76,7 @@ class MapStore {
 
 	show = (data, isLonLat) => {
 		this.stopAnimation();
-		let coordinates = [data["lon"], data["lat"]];
+		let coordinates = [data[lonKey], data[latKey]];
 
 		if (isLonLat) {
 			coordinates = fromLonLat(coordinates);
@@ -78,14 +88,14 @@ class MapStore {
 		const keys = Object.keys(data);
 
 		overlayElement.innerHTML = `
-						${keys.map(key => {
-			if (key === "lon" || key === "lat") {
-				return ``
-			}
+			${keys.map(key => {
+				if (key === lonKey || key === latKey) {
+					return ``
+				}
 
-			return `<span>${key + ": " + data[key]}</span>`
-		}).join(' ')}
-					`;
+				return `<span>${key + ": " + data[key]}</span>`
+			}).join(' ')}
+		`;
 
 		overlay.setPosition(coordinates);
 
@@ -137,14 +147,13 @@ class MapStore {
 		const keys = Object.keys(properties);
 
 		overlayElement.innerHTML = `
-						${keys.map(key => {
-			if (key === "geometry") {
-				return ``
-			}
+			${keys.map(key => {
+				if (key === "geometry") {
+					return ``
+				}
 
-			return `<span>${key + ": " + properties[key]}</span>`
-		}).join(' ')}
-					`;
+				return `<span>${key + ": " + properties[key]}</span>`
+			}).join(' ')}`;
 
 		overlay.setPosition(feature.getGeometry().flatCoordinates);
 	}
