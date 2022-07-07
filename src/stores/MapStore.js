@@ -7,6 +7,7 @@ import {GeoJSON} from "ol/format";
 
 import ObjectsStore from "./ObjectsStore";
 import {fromLonLat} from "ol/proj";
+import {overlayId} from "../data/mapConfig";
 
 class MapStore {
 	constructor() {
@@ -63,12 +64,30 @@ class MapStore {
 		view.setZoom(view.getZoom());
 	}
 
-	show = (coordinates, isLonLat) => {
+	show = (data, isLonLat) => {
 		this.stopAnimation();
+		let coordinates = [data["lon"], data["lat"]];
 
 		if (isLonLat) {
 			coordinates = fromLonLat(coordinates);
 		}
+
+		const overlay = this.getOverlayById(overlayId);
+		const overlayElement = overlay.getElement();
+
+		const keys = Object.keys(data);
+
+		overlayElement.innerHTML = `
+						${keys.map(key => {
+			if (key === "lon" || key === "lat") {
+				return ``
+			}
+
+			return `<span>${key + ": " + data[key]}</span>`
+		}).join(' ')}
+					`;
+
+		overlay.setPosition(coordinates);
 
 		const view = this.map.getView();
 		view.animate({
@@ -111,7 +130,7 @@ class MapStore {
 	}
 
 	setOverlay = (feature) => {
-		const overlay = this.map.getOverlayById(1);
+		const overlay = this.map.getOverlayById(overlayId);
 		const overlayElement = overlay.getElement();
 		const properties = feature.getProperties();
 
@@ -123,7 +142,7 @@ class MapStore {
 				return ``
 			}
 
-			return `<span>${key + " - " + properties[key]}</span>`
+			return `<span>${key + ": " + properties[key]}</span>`
 		}).join(' ')}
 					`;
 
