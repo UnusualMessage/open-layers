@@ -6,6 +6,7 @@ import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";
 
 import ObjectsStore from "./ObjectsStore";
+import {fromLonLat} from "ol/proj";
 
 class MapStore {
 	constructor() {
@@ -62,7 +63,13 @@ class MapStore {
 		view.setZoom(view.getZoom());
 	}
 
-	show = (coordinates) => {
+	show = (coordinates, isLonLat) => {
+		this.stopAnimation();
+
+		if (isLonLat) {
+			coordinates = fromLonLat(coordinates);
+		}
+
 		const view = this.map.getView();
 		view.animate({
 			zoom: 18,

@@ -32,7 +32,7 @@ const Table = ({ data, columns }) => {
 				return (
 					<tr className={`${css.row}`}
 						{...row.getRowProps()}
-					    onClick={() => { MapStore.show([row.original.lon, row.original.lat]) } } >
+					    onClick={() => { MapStore.show([row.original.lon, row.original.lat], true) } } >
 
 						{row.cells.map(cell => {
 							return (

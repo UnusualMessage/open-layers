@@ -6,6 +6,7 @@ import css from "./table.module.scss";
 import ObjectsStore from "../../stores/ObjectsStore";
 import CurrentStateStore from "../../stores/CurrentStateStore";
 import Table from "./Table";
+import {toLonLat} from "ol/proj";
 
 const FeaturesTable = () => {
 	const groups = ObjectsStore.getFeaturesById(CurrentStateStore.getCurrentTable(), CurrentStateStore.getFilter());
@@ -59,8 +60,10 @@ const FeaturesTable = () => {
 				record[key] = feature.properties[key];
 			}
 
-			record["lon"] = feature.geometry.coordinates[0];
-			record["lat"] = feature.geometry.coordinates[1];
+			const lonLatCoordinates = toLonLat(feature.geometry.coordinates);
+
+			record["lon"] = lonLatCoordinates[0];
+			record["lat"] = lonLatCoordinates[1];
 
 			result.push(record);
 		}
