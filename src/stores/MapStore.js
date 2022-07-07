@@ -23,7 +23,7 @@ class MapStore {
 		for (let i = 0; i < this.layers.length; ++i) {
 			const geoJson = {
 				type: "FeatureCollection",
-				features: ObjectsStore.getFeaturesByIndex(i, filter)
+				features: ObjectsStore.getFeaturesByIndex(i, filter).featureCollection
 			}
 
 			const source = new VectorSource({
@@ -32,14 +32,9 @@ class MapStore {
 
 			this.layers[i].layer.setSource(source);
 		}
-
 	}
 
 	addLayer = (layer, layerId) => {
-		layer.setProperties({
-			id: layerId
-		});
-
 		this.layers.push({
 			layer: layer,
 			id: layerId

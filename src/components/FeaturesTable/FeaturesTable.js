@@ -8,7 +8,7 @@ import CurrentStateStore from "../../stores/CurrentStateStore";
 import Table from "./Table";
 
 const FeaturesTable = () => {
-	const groups = ObjectsStore.get(CurrentStateStore.getFilter())[0];
+	const groups = ObjectsStore.getFeaturesById(CurrentStateStore.getCurrentTable(), CurrentStateStore.getFilter());
 
 	const headers = useMemo(() => {
 		const result = [];

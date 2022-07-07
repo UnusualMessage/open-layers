@@ -31,7 +31,11 @@ class ObjectsStore {
 	}
 
 	getFeaturesById = (id, filter) => {
-		const group = this.groups.find(group => group.id === id);
+		if (this.groups.length === 0) {
+			return undefined;
+		}
+
+		const group = this.groups?.find(group => group.id === id);
 		let copy = JSON.parse(JSON.stringify(group));
 
 		copy.featureCollection = this.getFilteredFeatures(copy.featureCollection, filter);
