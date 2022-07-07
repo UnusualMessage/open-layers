@@ -13,6 +13,17 @@ const csvUrl = "portals.csv";
 const overlayId = 1;
 const overlayOffset = [-100, -10];
 
+const lonKey = "lon";
+const latKey = "lat";
+
+const ruNameKey = "name_ru";
+const enNameKey = "name_en";
+
+const localStorageCenterLabel = "center";
+const localStorageZoomLabel = "zoom";
+const localStorageLayersLabel = "layers";
+const localStorageFilterLabel = "filter";
+
 export {
 	defaultZoom,
 	defaultCenter,
@@ -22,5 +33,13 @@ export {
 	geoJsonUrl,
 	csvUrl,
 	overlayId,
-	overlayOffset
+	overlayOffset,
+	lonKey,
+	latKey,
+	ruNameKey,
+	enNameKey,
+	localStorageCenterLabel,
+	localStorageZoomLabel,
+	localStorageLayersLabel,
+	localStorageFilterLabel
 };
