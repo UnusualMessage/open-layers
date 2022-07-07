@@ -12,14 +12,16 @@ import PresentationButton from "./controls/PresentationButton";
 import FeatureOverlay from "./Overlay/FeatureOverlay";
 import Filter from "./controls/Filter";
 import FeaturesTable from "./FeaturesTable";
+import TableSwitcher from "./controls/TableSwitcher";
 
 function App() {
 	return (
 		<>
 			<Controls>
 				<Switcher/>
-				<PresentationButton/>
+				<TableSwitcher/>
 				<Filter/>
+				<PresentationButton/>
 			</Controls>
 			<MultiLayerMap>
 				<Layer strategies={[fromTextToJson]} sourceUrl={geoJsonUrl} layerId={geoJsonId}/>

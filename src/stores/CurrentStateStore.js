@@ -15,6 +15,8 @@ class CurrentStateStore {
 		this.filter = localStorage.getItem("filter");
 		this.filter = this.filter ? this.filter : "";
 
+		this.currentTable = "geo";
+
 		makeAutoObservable(this);
 	}
 
@@ -35,6 +37,14 @@ class CurrentStateStore {
 	setFilter = (filter) => {
 		this.filter = filter;
 		localStorage.setItem("filter", filter);
+	}
+
+	setCurrentTable = (table) => {
+		this.currentTable = table;
+	}
+
+	getCurrentTable = () => {
+		return this.currentTable;
 	}
 
 	getCenter = () => {

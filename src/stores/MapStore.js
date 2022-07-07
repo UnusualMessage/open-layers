@@ -15,10 +15,6 @@ class MapStore {
 		this.layers = [];
 	}
 
-	isLayerVisible = (id) => {
-		return this.getLayerById(id).getVisible();
-	}
-
 	getLayerById = (id) => {
 		return this.map.getAllLayers().find(layer => layer.get("id") === id);
 	}
