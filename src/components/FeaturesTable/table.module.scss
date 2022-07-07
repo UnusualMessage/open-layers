@@ -3,4 +3,32 @@
   height: 50%;
 
   overflow: scroll;
+
+  .main {
+    font-size: 14px;
+
+    .head {
+      .row {
+        .item {
+          padding: 5px;
+          border: 2px solid black;
+        }
+      }
+    }
+
+    .body {
+      .row {
+        cursor: pointer;
+
+        &:hover {
+          background: greenyellow;
+        }
+
+        .item {
+          padding: 5px;
+          border: 2px solid black;
+        }
+      }
+    }
+  }
 }

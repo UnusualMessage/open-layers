@@ -15,14 +15,23 @@ class MapStore {
 		this.layers = [];
 	}
 
+	isLayerVisible = (id) => {
+		return this.getLayerById(id).getVisible();
+	}
+
 	getLayerById = (id) => {
-		return this.layers.find(layer => layer.id === id).layer;
+		return this.map.getAllLayers().find(layer => layer.get("id") === id);
 	}
 
 	filterFeatures = (filter) => {
 		for (let i = 0; i < this.layers.length; ++i) {
+			const geoJson = {
+				type: "FeatureCollection",
+				features: ObjectsStore.getFeaturesByIndex(i, filter)
+			}
+
 			const source = new VectorSource({
-				features: new GeoJSON().readFeatures(ObjectsStore.getObjectByIndex(i, filter))
+				features: new GeoJSON().readFeatures(geoJson)
 			});
 
 			this.layers[i].layer.setSource(source);
@@ -31,10 +40,15 @@ class MapStore {
 	}
 
 	addLayer = (layer, layerId) => {
+		layer.setProperties({
+			id: layerId
+		});
+
 		this.layers.push({
 			layer: layer,
 			id: layerId
 		});
+
 		this.map.addLayer(layer);
 	}
 
@@ -55,6 +69,15 @@ class MapStore {
 		const view = this.map.getView();
 
 		view.setZoom(view.getZoom());
+	}
+
+	show = (coordinates) => {
+		const view = this.map.getView();
+		view.animate({
+			zoom: 18,
+			center: coordinates,
+			duration: 3000
+		})
 	}
 
 	initMap = (ref, view) => {

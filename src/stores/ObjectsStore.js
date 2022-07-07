@@ -4,34 +4,42 @@ import {fromLonLat} from "ol/proj";
 import Parser from "../utils/Parser/Parser";
 import FileService from "../services/FileService";
 import matches from "../utils/matches";
-import CurrentStateStore from "./CurrentStateStore";
 
 class ObjectsStore {
 	constructor() {
 		this.service = FileService;
-		this.objects = [];
+		this.groups = [];
 
 		makeAutoObservable(this);
 	}
 
 	get = (filter) => {
 		const result = []
-		for (let i = 0; i < this.objects.length; ++i) {
-			result.push(this.getObjectByIndex(i, filter));
+		for (let i = 0; i < this.groups.length; ++i) {
+			result.push(this.getFeaturesByIndex(i, filter));
 		}
 
 		return result;
 	}
 
-	getObjectByIndex = (index, filter) => {
-		const object = this.objects[index].object;
-		let copy = JSON.parse(JSON.stringify(object));
+	getFeaturesByIndex = (index, filter) => {
+		const group = this.groups[index];
+		let copy = JSON.parse(JSON.stringify(group));
 
-		return this.getFilteredObject(copy, filter);
+		copy.featureCollection = this.getFilteredFeatures(copy.featureCollection, filter);
+		return copy;
 	}
 
-	getFilteredObject = (copy, filter) => {
-		copy.features = copy.features.filter(feature => {
+	getFeaturesById = (id, filter) => {
+		const group = this.groups.find(group => group.id === id);
+		let copy = JSON.parse(JSON.stringify(group));
+
+		copy.featureCollection = this.getFilteredFeatures(copy.featureCollection, filter);
+		return copy;
+	}
+
+	getFilteredFeatures = (featureCollection, filter) => {
+		featureCollection = featureCollection.filter(feature => {
 			const keys = Object.keys(feature.properties);
 			for (let key of keys) {
 				if (key === "name_ru" || key === "name_en") {
@@ -41,34 +49,28 @@ class ObjectsStore {
 
 			return matches(filter, feature.properties.name)
 		});
-		return copy;
+
+		return featureCollection;
 	}
 
-	getObjectById = (id, filter) => {
-		const object = this.objects.find(object => object.id === id).object;
-		let copy = JSON.parse(JSON.stringify(object));
-
-		return this.getFilteredObject(copy, filter);
-	}
-
-	readObjects = async (url, parsingStrategies, id) => {
+	readGroup = async (url, parsingStrategies, id) => {
 		try {
-			let object = await this.service.get(url);
+			let file = await this.service.get(url);
 			for (let i = 0; i < parsingStrategies.length; ++i) {
-				const parser = new Parser(object, parsingStrategies[i]);
-				object = parser.parse();
+				const parser = new Parser(file, parsingStrategies[i]);
+				file = parser.parse();
 			}
 
-			for (let i = 0; i < object.features.length; ++i) {
-				object.features[i].geometry.coordinates = fromLonLat(
-					object.features[i].geometry.coordinates
+			for (let i = 0; i < file.features.length; ++i) {
+				file.features[i].geometry.coordinates = fromLonLat(
+					file.features[i].geometry.coordinates
 				);
 			}
 
 			runInAction(() => {
-				this.objects.push({
+				this.groups.push({
 					id: id,
-					object: object
+					featureCollection: file.features
 				});
 			})
 		} catch(error) {

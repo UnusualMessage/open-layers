@@ -12,16 +12,21 @@ import {defaultVisibility} from "../../data/mapConfig";
 
 const Layer = ({ sourceUrl, strategies, layerId }) => {
 	runInAction(async () => {
-		await ObjectsStore.readObjects(
+		await ObjectsStore.readGroup(
 			sourceUrl,
 			strategies,
 			layerId
 		);
 
-		const objects = ObjectsStore.getObjectById(layerId, CurrentStateStore.getFilter());
+		const group = ObjectsStore.getFeaturesById(layerId, CurrentStateStore.getFilter());
+
+		const geoJson = {
+			type: "FeatureCollection",
+			features: group.featureCollection
+		}
 
 		const vectorSource = new VectorSource({
-			features: new GeoJSON().readFeatures(objects)
+			features: new GeoJSON().readFeatures(geoJson)
 		});
 
 		const vectorLayer = new VectorLayer({
