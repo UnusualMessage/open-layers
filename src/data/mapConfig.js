@@ -5,9 +5,22 @@ const defaultZoom = 15;
 const defaultVisibility = true;
 
 const geoJsonId = "geo";
-const csvId = "csv";
-
 const geoJsonUrl = "bars.geojson";
+
+const csvId = "csv";
 const csvUrl = "portals.csv";
 
-export { defaultZoom, defaultCenter, defaultVisibility, geoJsonId, csvId, geoJsonUrl, csvUrl };
+const overlayId = 1;
+const overlayOffset = [-100, -10];
+
+export {
+	defaultZoom,
+	defaultCenter,
+	defaultVisibility,
+	geoJsonId,
+	csvId,
+	geoJsonUrl,
+	csvUrl,
+	overlayId,
+	overlayOffset
+};

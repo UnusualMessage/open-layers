@@ -5,23 +5,21 @@ import {Overlay} from "ol";
 import css from "./overlay.module.scss";
 
 import MapStore from "../../stores/MapStore";
-import {runInAction} from "mobx";
+import {overlayId, overlayOffset} from "../../data/mapConfig";
 
 const FeatureOverlay = () => {
 	const overlayRef = useRef();
 
 	const onMouseLeave = () => {
-		runInAction(() => {
-			MapStore.getOverlayById(1).setPosition(undefined);
-			MapStore.stopAnimation();
-		})
+		MapStore.getOverlayById(overlayId).setPosition(undefined);
+		MapStore.stopAnimation();
 	}
 
 	useEffect(() => {
 		const overlay = new Overlay({
 			element: overlayRef.current,
-			offset: [-100, -10],
-			id: 1
+			offset: overlayOffset,
+			id: overlayId
 		});
 
 		MapStore.addOverlay(overlay);
