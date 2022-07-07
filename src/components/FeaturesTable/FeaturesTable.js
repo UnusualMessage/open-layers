@@ -1,20 +1,23 @@
 import {observer} from "mobx-react-lite";
 import {useMemo} from "react";
+import {toLonLat} from "ol/proj";
 
 import css from "./table.module.scss";
 
 import ObjectsStore from "../../stores/ObjectsStore";
 import CurrentStateStore from "../../stores/CurrentStateStore";
 import Table from "./Table";
-import {toLonLat} from "ol/proj";
+import MapStore from "../../stores/MapStore";
+import {latKey, lonKey} from "../../data/mapConfig";
 
 const FeaturesTable = () => {
 	const groups = ObjectsStore.getFeaturesById(CurrentStateStore.getCurrentTable(), CurrentStateStore.getFilter());
+	const visibility = MapStore.isVisible(CurrentStateStore.getCurrentTable());
 
 	const headers = useMemo(() => {
 		const result = [];
 
-		if (groups === undefined || groups.length === 0) {
+		if (groups === undefined || groups.length === 0 || !visibility) {
 			return [];
 		}
 
@@ -34,17 +37,17 @@ const FeaturesTable = () => {
 		}
 
 		result.push({
-			Header: "lon",
-			accessor: "lon"
+			Header: lonKey,
+			accessor: lonKey
 		});
 
 		result.push({
-			Header: "lat",
-			accessor: "lat"
+			Header: latKey,
+			accessor: latKey
 		})
 
 		return result;
-	}, [groups]);
+	}, [groups, visibility]);
 
 	const data = useMemo(() => {
 		const result = [];
@@ -62,8 +65,8 @@ const FeaturesTable = () => {
 
 			const lonLatCoordinates = toLonLat(feature.geometry.coordinates);
 
-			record["lon"] = lonLatCoordinates[0];
-			record["lat"] = lonLatCoordinates[1];
+			record[lonKey] = lonLatCoordinates[0];
+			record[latKey] = lonLatCoordinates[1];
 
 			result.push(record);
 		}

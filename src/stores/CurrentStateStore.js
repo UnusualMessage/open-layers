@@ -1,42 +1,38 @@
 import {makeAutoObservable} from "mobx";
 
+import {
+	geoJsonId,
+	localStorageCenterLabel,
+	localStorageFilterLabel,
+	localStorageLayersLabel,
+	localStorageZoomLabel
+} from "../data/mapConfig";
+
 class CurrentStateStore {
 	constructor() {
-		this.layersState = JSON.parse(localStorage.getItem("layers"));
+		this.layersState = JSON.parse(localStorage.getItem(localStorageLayersLabel));
 		if (this.layersState == null) {
 			this.layersState = [];
 		}
 
-		this.currentCenter = localStorage.getItem("center");
-		this.currentCenter = this.fromStringToArray(this.currentCenter, Number);
+		this.currentCenter = JSON.parse(localStorage.getItem(localStorageCenterLabel));
+		this.currentZoom = localStorage.getItem(localStorageZoomLabel);
 
-		this.currentZoom = localStorage.getItem("zoom");
+		this.currentFilter = localStorage.getItem(localStorageFilterLabel);
+		this.currentFilter = this.currentFilter ? this.currentFilter : "";
 
-		this.filter = localStorage.getItem("filter");
-		this.filter = this.filter ? this.filter : "";
-
-		this.currentTable = "geo";
+		this.currentTable = geoJsonId;
 
 		makeAutoObservable(this);
 	}
 
-	fromStringToArray = (str, strategy) => {
-		if (str != null) {
-			str = str.split(',');
-			str = str.map(item => strategy(item));
-			return str;
-		}
-
-		return null;
-	}
-
 	getFilter = () => {
-		return this.filter;
+		return this.currentFilter;
 	}
 
 	setFilter = (filter) => {
-		this.filter = filter;
-		localStorage.setItem("filter", filter);
+		this.currentFilter = filter;
+		localStorage.setItem(localStorageFilterLabel, filter);
 	}
 
 	setCurrentTable = (table) => {
@@ -71,16 +67,16 @@ class CurrentStateStore {
 			})
 		}
 
-		localStorage.setItem("layers", JSON.stringify(this.layersState));
+		localStorage.setItem(localStorageLayersLabel, JSON.stringify(this.layersState));
 	}
 
 	setCenter = (center) => {
-		localStorage.setItem("center", center);
+		localStorage.setItem(localStorageCenterLabel, JSON.stringify(center));
 		this.currentCenter = center;
 	}
 
 	setZoom = (zoom) => {
-		localStorage.setItem("zoom", zoom);
+		localStorage.setItem(localStorageZoomLabel, zoom);
 		this.currentZoom = zoom;
 	}
 }
