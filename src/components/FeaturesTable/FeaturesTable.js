@@ -7,17 +7,16 @@ import css from "./table.module.scss";
 import ObjectsStore from "../../stores/ObjectsStore";
 import CurrentStateStore from "../../stores/CurrentStateStore";
 import Table from "./Table";
-import MapStore from "../../stores/MapStore";
 import {latKey, lonKey} from "../../data/mapConfig";
 
 const FeaturesTable = () => {
 	const groups = ObjectsStore.getFeaturesById(CurrentStateStore.getCurrentTable(), CurrentStateStore.getFilter());
-	const visibility = MapStore.isVisible(CurrentStateStore.getCurrentTable());
+	const visible = CurrentStateStore.getLayerStateById(CurrentStateStore.getCurrentTable());
 
 	const headers = useMemo(() => {
 		const result = [];
 
-		if (groups === undefined || groups.length === 0 || !visibility) {
+		if (groups === undefined || groups.length === 0 || !visible) {
 			return [];
 		}
 
@@ -47,7 +46,7 @@ const FeaturesTable = () => {
 		})
 
 		return result;
-	}, [groups, visibility]);
+	}, [groups, visible]);
 
 	const data = useMemo(() => {
 		const result = [];
