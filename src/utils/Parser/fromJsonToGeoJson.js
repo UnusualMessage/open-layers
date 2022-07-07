@@ -1,3 +1,5 @@
+import {latKey, lonKey} from "../../data/mapConfig";
+
 const fromJsonToGeoJson = (json) => {
 	const result = {
 		type: "FeatureCollection",
@@ -20,15 +22,15 @@ const fromJsonToGeoJson = (json) => {
 		}
 
 		for (let key of Object.keys(json[i])) {
-			if (key === "lon" || key === "lat") {
+			if (key === lonKey || key === latKey) {
 				continue;
 			}
 			
 			feature.properties[key] = json[i][key];
 		}
 
-		feature.geometry.coordinates.push(json[i].lon);
-		feature.geometry.coordinates.push(json[i].lat);
+		feature.geometry.coordinates.push(json[i][lonKey]);
+		feature.geometry.coordinates.push(json[i][latKey]);
 
 		result.features.push(feature);
 

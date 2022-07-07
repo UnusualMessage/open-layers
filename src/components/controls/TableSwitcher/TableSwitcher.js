@@ -1,6 +1,6 @@
 import {observer} from "mobx-react-lite";
 
-import css from "./tableSwitcher.scss";
+import css from "./tableSwitcher.module.scss";
 
 import CurrentStateStore from "../../../stores/CurrentStateStore";
 import {geoJsonId, csvId} from "../../../data/mapConfig";
@@ -16,14 +16,14 @@ const TableSwitcher = () => {
 				<input type="radio" value="geo" id="geoTable" onChange={onChange}
 				       checked={CurrentStateStore.getCurrentTable() === geoJsonId}/>
 
-				<label htmlFor="geoTable">GeoJSON таблица</label>
+				<label htmlFor="geoTable">Таблица GeoJSON</label>
 			</div>
 
 			<div className={`${css.button}`}>
 				<input type="radio" value="csv" id="csvTable" onChange={onChange}
 				       checked={CurrentStateStore.getCurrentTable() === csvId}/>
 
-				<label htmlFor="csvTable">CSV таблица</label>
+				<label htmlFor="csvTable">Таблица CSV</label>
 			</div>
 		</div>
 	);

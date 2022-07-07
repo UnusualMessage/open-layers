@@ -17,11 +17,11 @@ const LayerSwitcher = ({text, layerId, label}) => {
 
 	return(
 		<div className={`${css.item}`}>
-			<label htmlFor={label}>{text}</label>
 			<input type={"checkbox"}
 			       id={label}
 			       checked={CurrentStateStore.getLayerStateById(layerId)}
 			       onChange={onChange}/>
+			<label htmlFor={label}>{text}</label>
 		</div>
 	)
 }

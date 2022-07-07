@@ -1,5 +1,5 @@
 const matches = (filter, ...values) => {
-	filter = filter?.toLowerCase();
+	filter = filter?.toLowerCase().replace(/['"\s]+/g, '');
 
 	let matches = false;
 	for (let value of values) {
