@@ -1,20 +1,16 @@
-const matches = (filter, real) => {
-	if (filter.length > real.length) {
-		return false;
-	}
+const matches = (filter, ...values) => {
+	filter = filter?.toLowerCase();
 
-	filter = filter.toLowerCase();
-	real = real.toLowerCase();
-
-	real.replace(/['"]+/g, '');
-
-	for (let i = 0; i < filter.length; ++i) {
-		if (filter[i] !== real[i]) {
-			return false;
+	let matches = false;
+	for (let value of values) {
+		value = value.toLowerCase().replace(/['"]+/g, '');
+		if (value.indexOf(filter) !== -1) {
+			matches = true;
+			return matches;
 		}
 	}
 
-	return true;
+	return matches;
 }
 
 export default matches;

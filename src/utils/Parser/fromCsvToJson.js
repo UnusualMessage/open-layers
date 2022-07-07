@@ -1,7 +1,6 @@
 const fromCsvToJson = (file) => {
 	const rows = file.split('\n');
 	const headers = rows[0].split(';');
-	headers[3] = "name";
 
 	const result = [];
 

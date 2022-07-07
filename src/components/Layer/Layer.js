@@ -18,7 +18,7 @@ const Layer = ({ sourceUrl, strategies, layerId }) => {
 			layerId
 		);
 
-		const objects = ObjectsStore.getObjectById(layerId);
+		const objects = ObjectsStore.getObjectById(layerId, CurrentStateStore.getFilter());
 
 		const vectorSource = new VectorSource({
 			features: new GeoJSON().readFeatures(objects)
