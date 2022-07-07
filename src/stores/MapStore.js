@@ -83,10 +83,30 @@ class MapStore {
 						duration: 2000,
 					});
 
-					this.map.getOverlayById(1).setPosition(feature.getGeometry().flatCoordinates);
+					this.setOverlay(feature);
 				}
 			})
 		});
+	}
+
+	setOverlay = (feature) => {
+		const overlay = this.map.getOverlayById(1);
+		const overlayElement = overlay.getElement();
+		const properties = feature.getProperties();
+
+		const keys = Object.keys(properties);
+
+		overlayElement.innerHTML = `
+						${keys.map(key => {
+			if (key === "geometry") {
+				return ``
+			}
+
+			return `<span>${key + " - " + properties[key]}</span>`
+		}).join(' ')}
+					`;
+
+		overlay.setPosition(feature.getGeometry().flatCoordinates);
 	}
 
 	startTours = (ids) => {
@@ -113,12 +133,11 @@ class MapStore {
 
 			const callback = (complete) => {
 				if (complete) {
-					alert(`${index}-й готов`);
 					to(index + 1, limit);
 				}
 			}
 
-			this.map.getOverlayById(1).setPosition(features[index].getGeometry().flatCoordinates);
+			this.setOverlay(features[index]);
 
 			view.animate({
 				center: features[index].getGeometry().flatCoordinates,

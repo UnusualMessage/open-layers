@@ -10,7 +10,7 @@ import {runInAction} from "mobx";
 const FeatureOverlay = () => {
 	const overlayRef = useRef();
 
-	const onClick = () => {
+	const onMouseLeave = () => {
 		runInAction(() => {
 			MapStore.getOverlayById(1).setPosition(undefined);
 			MapStore.stopAnimation();
@@ -20,6 +20,7 @@ const FeatureOverlay = () => {
 	useEffect(() => {
 		const overlay = new Overlay({
 			element: overlayRef.current,
+			offset: [-100, -10],
 			id: 1
 		});
 
@@ -27,14 +28,8 @@ const FeatureOverlay = () => {
 	}, [])
 
 	return(
-		<div className={css.overlay} ref={overlayRef}>
-			<div className={css.header}>
-				<span>Информация</span>
-				<span onClick={onClick}>Закрыть</span>
-			</div>
-			<div>
-				<span>Hello</span>
-			</div>
+		<div className={css.overlay} ref={overlayRef} onMouseLeave={onMouseLeave}>
+
 		</div>
 	);
 }
