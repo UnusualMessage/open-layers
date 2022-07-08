@@ -1,6 +1,6 @@
 import css from "./controls.module.scss";
 
-import Switcher from "./Checkbox";
+import Switcher from "./Switcher";
 import TableSwitcher from "./TableSwitcher";
 import Filter from "./Filter";
 import Paginator from "./Paginator/Paginator";
