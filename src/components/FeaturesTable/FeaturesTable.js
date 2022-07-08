@@ -29,7 +29,8 @@ const FeaturesTable = () => {
 			return [];
 		}
 
-		const first = groups.featureCollection[0];
+		let first = groups.featureCollection.find(feature => Object.keys(feature.properties).find(key => key === "note"));
+		first = first ? first : groups.featureCollection[0];
 
 		for (let key of Object.keys(first.properties)) {
 			const record = {
@@ -38,13 +39,6 @@ const FeaturesTable = () => {
 			};
 
 			result.push(record);
-		}
-
-		if (result.find(record => record.accessor === "marker-symbol")) {
-			result.push({
-				Header: "note",
-				accessor: "note"
-			})
 		}
 
 		result.push({

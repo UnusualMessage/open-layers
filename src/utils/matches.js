@@ -1,9 +1,11 @@
 const matches = (filter, ...values) => {
-	filter = filter?.toLowerCase().replace(/['"\s]+/g, '');
+	const regExp = /['"\s]+/g;
+
+	filter = filter?.toLowerCase().replace(regExp, '');
 
 	let matches = false;
 	for (let value of values) {
-		value = value.toLowerCase().replace(/['"\s]+/g, '');
+		value = value.toLowerCase().replace(regExp,  '');
 		if (value.indexOf(filter) !== -1) {
 			matches = true;
 			return matches;
