@@ -73,9 +73,17 @@ const FeaturesTable = () => {
 		return result;
 	}, [groups]);
 
+	let toShow = true;
+	if (data.length === 0 || headers.length === 0) {
+		toShow = false;
+	}
+
 	return (
 		<div className={`${css.table}`}>
-			<Table columns={headers} data={data}/>
+			{
+				toShow ? <Table columns={headers} data={data}/>
+					: <div className={`${css.placeholder}`}>ЗДЕСЬ ПУСТО...</div>
+			}
 		</div>
 	)
 }
