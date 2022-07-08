@@ -1,11 +1,14 @@
 import {makeAutoObservable} from "mobx";
 
 import {
+	defaultPage,
+	defaultCenter,
 	geoJsonId,
 	localStorageCenterLabel,
 	localStorageFilterLabel,
 	localStorageLayersLabel,
-	localStorageZoomLabel, page
+	localStoragePageLabel,
+	localStorageZoomLabel, defaultZoom
 } from "../data/mapConfig";
 
 class CurrentStateStore {
@@ -15,29 +18,38 @@ class CurrentStateStore {
 			this.layersState = [];
 		}
 
-		this.currentCenter = JSON.parse(localStorage.getItem(localStorageCenterLabel));
-		this.currentZoom = localStorage.getItem(localStorageZoomLabel);
+		const center = JSON.parse(localStorage.getItem(localStorageCenterLabel));
+		this.currentCenter = center ? center : defaultCenter;
 
-		this.currentFilter = localStorage.getItem(localStorageFilterLabel);
-		this.currentFilter = this.currentFilter ? this.currentFilter : "";
+		const zoom = Number(localStorage.getItem(localStorageZoomLabel));
+		this.currentZoom = zoom ? zoom : defaultZoom;
+
+		const filter = localStorage.getItem(localStorageFilterLabel)
+		this.currentFilter = filter ? filter : "";
+
+		const page  = Number(localStorage.getItem(localStoragePageLabel));
+		this.currentPage = page ? page : defaultPage;
 
 		this.currentTable = geoJsonId;
-
-		this.currentPage = page;
 
 		makeAutoObservable(this);
 	}
 
 	toNextPage = () => {
-		this.currentPage += 1;
+		this.toPage(this.currentPage + 1);
 	}
 
 	toPreviousPage = () => {
-		this.currentPage -= 1;
+		this.toPage(this.currentPage - 1);
 	}
 
 	toPage = (page) => {
 		this.currentPage = page;
+		this.savePageToLocalStorage();
+	}
+
+	savePageToLocalStorage = () => {
+		localStorage.setItem(localStoragePageLabel, this.currentPage.toString());
 	}
 
 	getCurrentPage = () => {

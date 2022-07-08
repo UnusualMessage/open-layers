@@ -5,7 +5,6 @@ import {View} from "ol";
 import css from "./map.module.scss";
 
 import MapStore from "../../stores/MapStore";
-import {defaultCenter, defaultZoom} from "../../data/mapConfig";
 import CurrentStateStore from "../../stores/CurrentStateStore";
 
 const MultiLayerMap = ({ children }) => {
@@ -15,9 +14,6 @@ const MultiLayerMap = ({ children }) => {
 		if (MapStore.getMap() == null) {
 			let zoom = CurrentStateStore.getZoom();
 			let center = CurrentStateStore.getCenter();
-
-			zoom = zoom ? zoom : defaultZoom;
-			center = center ? center : defaultCenter;
 
 			const view = new View({
 				center: center,
