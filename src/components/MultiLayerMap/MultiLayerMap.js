@@ -24,16 +24,24 @@ const MultiLayerMap = ({ children }) => {
 				zoom: zoom
 			});
 
-			view.on("change:resolution", () => {
+			const onZoomChange = () => {
 				CurrentStateStore.setZoom(view.getZoom())
 				CurrentStateStore.setCenter(view.getCenter());
-			});
+			}
 
-			view.on("change:center", () => {
+			const onCenterChange = () => {
 				CurrentStateStore.setCenter(view.getCenter());
-			});
+			}
+
+			view.on("change:resolution", onZoomChange);
+			view.on("change:center", onCenterChange);
 
 			MapStore.initMap(mapRef.current, view);
+
+			return () => {
+				view.un("change:center", onCenterChange);
+				view.un("change:resolution", onZoomChange);
+			}
 		}
 	}, []);
 

@@ -11,7 +11,7 @@ const csvId = "csv";
 const csvUrl = "portals.csv";
 
 const overlayId = 1;
-const overlayOffset = [-100, -10];
+const overlayOffset = [-125, -10];
 
 const lonKey = "lon";
 const latKey = "lat";

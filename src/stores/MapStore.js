@@ -11,10 +11,10 @@ import {latKey, lonKey, overlayId} from "../data/mapConfig";
 
 class MapStore {
 	constructor() {
-		makeAutoObservable(this);
-
 		this.map = null;
 		this.layers = [];
+
+		makeAutoObservable(this);
 	}
 
 	getLayerById = (id) => {
@@ -58,19 +58,8 @@ class MapStore {
 		layer.setVisible(visible);
 	}
 
-	isVisible = (id) => {
-		const layer = this.layers.find(item => item.id === id)?.layer;
-
-		if (layer === undefined) {
-			return false;
-		}
-
-		return layer.getVisible();
-	}
-
 	stopAnimation = () => {
 		const view = this.map.getView();
-
 		view.setZoom(view.getZoom());
 	}
 
@@ -158,22 +147,28 @@ class MapStore {
 		overlay.setPosition(feature.getGeometry().flatCoordinates);
 	}
 
-	startTours = (ids) => {
-		for (let id of ids) {
-			this.startTour(id);
-		}
-	}
-
-	startTour = (layerId) => {
+	startTour = (...ids) => {
 		const view = this.map.getView();
 
-		const layer = this.getLayerById(layerId);
+		const layers = [];
+		for (let id of ids) {
+			const layer = this.getLayerById(id);
 
-		if (layer.getVisible() === false) {
+			if (layer.getVisible() === false) {
+				continue;
+			}
+
+			layers.push(this.getLayerById(id));
+		}
+
+		if (layers.length === 0) {
 			return;
 		}
 
-		const features = layer.getSource().getFeatures();
+		const features = [];
+		for (let layer of layers) {
+			features.push(...layer.getSource().getFeatures());
+		}
 
 		const to = (index, limit) => {
 			if (index >= limit) {

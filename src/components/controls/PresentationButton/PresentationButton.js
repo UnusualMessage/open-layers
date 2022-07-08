@@ -6,7 +6,7 @@ import {csvId, geoJsonId} from "../../../data/mapConfig";
 
 const PresentationButton = () => {
 	const onClick = () => {
-		MapStore.startTours([geoJsonId, csvId]);
+		MapStore.startTour(geoJsonId, csvId);
 	}
 
 	return(
