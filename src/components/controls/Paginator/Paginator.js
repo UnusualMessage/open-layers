@@ -25,6 +25,10 @@ const Paginator = () => {
 		}
 	}
 
+	const onLast = () => {
+		CurrentStateStore.toPage(pagesCount);
+	}
+
 	const onInput = (e) => {
 		let page = e.target.value;
 
@@ -37,10 +41,18 @@ const Paginator = () => {
 		}
 	}
 
+	const onFirst = () => {
+		CurrentStateStore.toPage(1);
+	}
+
 	return(
 		<div className={`${css.paginator}`}>
+			<button onClick={onFirst}>
+				{"<<"}
+			</button>
+
 			<button onClick={onPrevious}>
-				Previous
+				{"<"}
 			</button>
 
 			<input className={`${css.input}`}
@@ -53,7 +65,11 @@ const Paginator = () => {
 			</span>
 
 			<button onClick={onNext}>
-				Next
+				{">"}
+			</button>
+
+			<button onClick={onLast}>
+				{">>"}
 			</button>
 		</div>
 	)
