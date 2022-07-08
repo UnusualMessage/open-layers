@@ -9,6 +9,7 @@ import CurrentStateStore from "../../../stores/CurrentStateStore";
 const LayerSwitcher = ({text, layerId, label}) => {
 	const onChange = () => {
 		runInAction(() => {
+			MapStore.stopAnimation();
 			const visible = CurrentStateStore.getLayerStateById(layerId);
 			MapStore.changeLayerVisibility(!visible, layerId);
 			CurrentStateStore.addLayerState(!visible, layerId);

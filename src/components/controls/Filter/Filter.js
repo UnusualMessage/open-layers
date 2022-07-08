@@ -7,10 +7,9 @@ import MapStore from "../../../stores/MapStore";
 
 const Filter = () => {
 	const onInput = (e) => {
-		runInAction(() => {
-			CurrentStateStore.setFilter(e.target.value);
-			MapStore.filterFeatures(CurrentStateStore.getFilter());
-		})
+		MapStore.stopAnimation();
+		CurrentStateStore.setFilter(e.target.value);
+		MapStore.filterFeatures(CurrentStateStore.getFilter());
 	}
 
 	return(
