@@ -5,7 +5,7 @@ import {
 	localStorageCenterLabel,
 	localStorageFilterLabel,
 	localStorageLayersLabel,
-	localStorageZoomLabel
+	localStorageZoomLabel, page
 } from "../data/mapConfig";
 
 class CurrentStateStore {
@@ -23,7 +23,25 @@ class CurrentStateStore {
 
 		this.currentTable = geoJsonId;
 
+		this.currentPage = page;
+
 		makeAutoObservable(this);
+	}
+
+	toNextPage = () => {
+		this.currentPage += 1;
+	}
+
+	toPreviousPage = () => {
+		this.currentPage -= 1;
+	}
+
+	toPage = (page) => {
+		this.currentPage = page;
+	}
+
+	getCurrentPage = () => {
+		return this.currentPage;
 	}
 
 	getFilter = () => {

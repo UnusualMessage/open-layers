@@ -13,6 +13,7 @@ import FeatureOverlay from "./Overlay/FeatureOverlay";
 import Filter from "./controls/Filter";
 import FeaturesTable from "./FeaturesTable";
 import TableSwitcher from "./controls/TableSwitcher";
+import Paginator from "./controls/Paginator/Paginator";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 				<Switcher/>
 				<TableSwitcher/>
 				<Filter/>
+				<Paginator/>
 				<PresentationButton/>
 			</Controls>
 			<MultiLayerMap>

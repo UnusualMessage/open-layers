@@ -24,6 +24,9 @@ const localStorageZoomLabel = "zoom";
 const localStorageLayersLabel = "layers";
 const localStorageFilterLabel = "filter";
 
+const pageSize = 15;
+const page = 1;
+
 export {
 	defaultZoom,
 	defaultCenter,
@@ -41,5 +44,7 @@ export {
 	localStorageCenterLabel,
 	localStorageZoomLabel,
 	localStorageLayersLabel,
-	localStorageFilterLabel
+	localStorageFilterLabel,
+	pageSize,
+	page
 };
