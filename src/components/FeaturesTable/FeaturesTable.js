@@ -10,9 +10,11 @@ import Table from "./Table";
 import {latKey, lonKey} from "../../data/mapConfig";
 
 const FeaturesTable = () => {
-	const groups = ObjectsStore.getPagedFeaturesById(CurrentStateStore.getCurrentTable(),
+	const groups = ObjectsStore.getPagedFeaturesById(
+		CurrentStateStore.getCurrentTable(),
 		CurrentStateStore.getFilter(),
-		CurrentStateStore.getCurrentPage());
+		CurrentStateStore.getCurrentPage()
+	);
 
 	const visible = CurrentStateStore.getLayerStateById(CurrentStateStore.getCurrentTable());
 
@@ -36,6 +38,13 @@ const FeaturesTable = () => {
 			};
 
 			result.push(record);
+		}
+
+		if (result.find(record => record.accessor === "marker-symbol")) {
+			result.push({
+				Header: "note",
+				accessor: "note"
+			})
 		}
 
 		result.push({
