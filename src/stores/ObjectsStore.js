@@ -8,7 +8,7 @@ import {enNameKey, pageSize, ruNameKey} from "../data/mapConfig";
 
 class ObjectsStore {
 	constructor() {
-		this.service = FileService;
+		this.service = new FileService();
 		this.groups = [];
 
 		makeAutoObservable(this);

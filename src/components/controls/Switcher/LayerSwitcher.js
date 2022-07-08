@@ -1,4 +1,3 @@
-import {runInAction} from "mobx";
 import {observer} from "mobx-react-lite";
 
 import css from "./switcher.module.scss";

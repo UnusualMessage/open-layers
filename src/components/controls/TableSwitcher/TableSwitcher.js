@@ -14,14 +14,14 @@ const TableSwitcher = () => {
 	return(
 		<div className={`${css.switcher}`}>
 			<div className={`${css.button}`}>
-				<input type="radio" value="geo" id="geoTable" onChange={onChange}
+				<input type="radio" value={geoJsonId} id="geoTable" onChange={onChange}
 				       checked={CurrentStateStore.getCurrentTable() === geoJsonId}/>
 
 				<label htmlFor="geoTable">Таблица GeoJSON</label>
 			</div>
 
 			<div className={`${css.button}`}>
-				<input type="radio" value="csv" id="csvTable" onChange={onChange}
+				<input type="radio" value={csvId} id="csvTable" onChange={onChange}
 				       checked={CurrentStateStore.getCurrentTable() === csvId}/>
 
 				<label htmlFor="csvTable">Таблица CSV</label>

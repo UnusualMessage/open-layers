@@ -12,7 +12,8 @@ const Paginator = () => {
 		CurrentStateStore.getFilter()
 	) / pageSize);
 
-	if (pagesCount === 0 || isNaN(pagesCount)) {
+	const tableVisible = CurrentStateStore.getLayerStateById(CurrentStateStore.getCurrentTable());
+	if (pagesCount === 0 || isNaN(pagesCount) || tableVisible === false) {
 		pagesCount = 1;
 	}
 

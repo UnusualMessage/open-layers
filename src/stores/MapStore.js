@@ -158,7 +158,7 @@ class MapStore {
 				continue;
 			}
 
-			layers.push(this.getLayerById(id));
+			layers.push(layer);
 		}
 
 		if (layers.length === 0) {
