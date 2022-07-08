@@ -3,10 +3,25 @@ import {observer} from "mobx-react-lite";
 import css from "./paginator.module.scss";
 
 import CurrentStateStore from "../../../stores/CurrentStateStore";
+import ObjectsStore from "../../../stores/ObjectsStore";
+import {pageSize} from "../../../data/mapConfig";
 
 const Paginator = () => {
+	let pagesCount = Math.ceil(ObjectsStore.getCurrentFeaturesCount(
+		CurrentStateStore.getCurrentTable(),
+		CurrentStateStore.getFilter()
+	) / pageSize);
+
+	if (pagesCount === 0 || isNaN(pagesCount)) {
+		pagesCount = 1;
+	}
+
+	const currentPage = CurrentStateStore.getCurrentPage();
+
 	const onNext = () => {
-		CurrentStateStore.toNextPage();
+		if (currentPage !== pagesCount) {
+			CurrentStateStore.toNextPage();
+		}
 	}
 
 	const onInput = (e) => {
@@ -20,7 +35,7 @@ const Paginator = () => {
 	}
 
 	const onPrevious = () => {
-		if (CurrentStateStore.getCurrentPage() > 1) {
+		if (currentPage > 1) {
 			CurrentStateStore.toPreviousPage();
 		}
 	}
@@ -34,7 +49,11 @@ const Paginator = () => {
 			<input className={`${css.input}`}
 			       type="number"
 			       onInput={onInput}
-			       value={CurrentStateStore.getCurrentPage()} min={"1"}/>
+			       value={currentPage} min={"1"}/>
+
+			<span>
+				из {pagesCount}
+			</span>
 
 			<button onClick={onNext}>
 				Next

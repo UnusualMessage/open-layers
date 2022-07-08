@@ -8,6 +8,7 @@ import {geoJsonId, csvId} from "../../../data/mapConfig";
 const TableSwitcher = () => {
 	const onChange = (e) => {
 		CurrentStateStore.setCurrentTable(e.target.value);
+		CurrentStateStore.toPage(1);
 	}
 
 	return(

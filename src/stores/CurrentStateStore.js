@@ -27,8 +27,7 @@ class CurrentStateStore {
 		const filter = localStorage.getItem(localStorageFilterLabel)
 		this.currentFilter = filter ? filter : "";
 
-		const page  = Number(localStorage.getItem(localStoragePageLabel));
-		this.currentPage = page ? page : defaultPage;
+		this.currentPage = defaultPage;
 
 		this.currentTable = geoJsonId;
 

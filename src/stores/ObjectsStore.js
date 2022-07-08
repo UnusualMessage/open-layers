@@ -23,6 +23,10 @@ class ObjectsStore {
 		return result;
 	}
 
+	getCurrentFeaturesCount = (id, filter) => {
+		return this.getFilteredFeatures(this.getFeaturesById(id, filter)?.featureCollection, filter)?.length;
+	}
+
 	getFeaturesByIndex = (index, filter) => {
 		const group = this.groups[index];
 		let copy = JSON.parse(JSON.stringify(group));
@@ -66,8 +70,8 @@ class ObjectsStore {
 
 		let end = pageSize * page;
 
-		if (start + pageSize >= features.length) {
-			end = features.length - pageSize + start;
+		if (start + pageSize > features.length) {
+			end = start + pageSize - (pageSize + start - features.length);
 		}
 
 		if (features.length <= pageSize) {
@@ -83,7 +87,7 @@ class ObjectsStore {
 	}
 
 	getFilteredFeatures = (featureCollection, filter) => {
-		featureCollection = featureCollection.filter(feature => {
+		featureCollection = featureCollection?.filter(feature => {
 			const keys = Object.keys(feature.properties);
 			for (let key of keys) {
 				if (key === ruNameKey || key === enNameKey) {
