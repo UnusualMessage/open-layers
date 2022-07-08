@@ -60,6 +60,10 @@ class ObjectsStore {
 	}
 
 	getPagedFilteredFeatures = (featureCollection, filter, page) => {
+		if (page === 0) {
+			page = 1;
+		}
+
 		const features = this.getFilteredFeatures(featureCollection, filter);
 
 		let start = (page - 1) * pageSize;

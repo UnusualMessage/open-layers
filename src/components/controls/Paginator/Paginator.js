@@ -28,10 +28,6 @@ const Paginator = () => {
 	const onInput = (e) => {
 		let page = e.target.value;
 
-		if (page === "") {
-			page = "1";
-		}
-
 		CurrentStateStore.toPage(Number(page));
 	}
 
@@ -50,7 +46,7 @@ const Paginator = () => {
 			<input className={`${css.input}`}
 			       type="number"
 			       onInput={onInput}
-			       value={currentPage} min={"1"}/>
+			       value={currentPage === 0 ? "" : currentPage} min={1} max={pagesCount}/>
 
 			<span>
 				из {pagesCount}
