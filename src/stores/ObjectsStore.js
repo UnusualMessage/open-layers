@@ -4,7 +4,7 @@ import {fromLonLat} from "ol/proj";
 import Parser from "../utils/Parser/Parser";
 import FileService from "../services/FileService";
 import matches from "../utils/matches";
-import {enNameKey, ruNameKey} from "../data/mapConfig";
+import {enNameKey, pageSize, ruNameKey} from "../data/mapConfig";
 
 class ObjectsStore {
 	constructor() {
@@ -41,6 +41,45 @@ class ObjectsStore {
 
 		copy.featureCollection = this.getFilteredFeatures(copy.featureCollection, filter);
 		return copy;
+	}
+
+	getPagedFeaturesById = (id, filter, page) => {
+		if (this.groups.length === 0) {
+			return undefined;
+		}
+
+		const group = this.groups?.find(group => group.id === id);
+		let copy = JSON.parse(JSON.stringify(group));
+
+		copy.featureCollection = this.getPagedFilteredFeatures(copy.featureCollection, filter, page);
+		return copy;
+	}
+
+	getPagedFilteredFeatures = (featureCollection, filter, page) => {
+		const features = this.getFilteredFeatures(featureCollection, filter);
+
+		let start = (page - 1) * pageSize;
+
+		if (start >= features.length) {
+			return [];
+		}
+
+		let end = pageSize * page;
+
+		if (start + pageSize >= features.length) {
+			end = features.length - pageSize + start;
+		}
+
+		if (features.length <= pageSize) {
+			end = features.length;
+		}
+
+		const result = [];
+		for (let i = start; i < end; ++i) {
+			result.push(features[i]);
+		}
+
+		return result;
 	}
 
 	getFilteredFeatures = (featureCollection, filter) => {

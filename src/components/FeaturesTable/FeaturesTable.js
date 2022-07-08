@@ -7,12 +7,14 @@ import css from "./table.module.scss";
 import ObjectsStore from "../../stores/ObjectsStore";
 import CurrentStateStore from "../../stores/CurrentStateStore";
 import Table from "./Table";
-import {latKey, lonKey, pageSize} from "../../data/mapConfig";
+import {latKey, lonKey} from "../../data/mapConfig";
 
 const FeaturesTable = () => {
-	const groups = ObjectsStore.getFeaturesById(CurrentStateStore.getCurrentTable(), CurrentStateStore.getFilter());
+	const groups = ObjectsStore.getPagedFeaturesById(CurrentStateStore.getCurrentTable(),
+		CurrentStateStore.getFilter(),
+		CurrentStateStore.getCurrentPage());
+
 	const visible = CurrentStateStore.getLayerStateById(CurrentStateStore.getCurrentTable());
-	const currentPage = CurrentStateStore.getCurrentPage();
 
 	const headers = useMemo(() => {
 		const result = [];
@@ -58,30 +60,14 @@ const FeaturesTable = () => {
 
 		const features = groups.featureCollection;
 
-		let start = (currentPage - 1) * pageSize;
-
-		if (start >= features.length) {
-			return [];
-		}
-
-		let end = pageSize * currentPage;
-
-		if (start + pageSize >= features.length) {
-			end = features.length - pageSize + start;
-		}
-
-		if (features.length <= pageSize) {
-			end = features.length;
-		}
-
-		for (let i = start; i < end; ++i) {
+		for (let feature of features) {
 			const record = {};
 
-			for (let key of Object.keys(features[i].properties)) {
-				record[key] = features[i].properties[key];
+			for (let key of Object.keys(feature.properties)) {
+				record[key] = feature.properties[key];
 			}
 
-			const lonLatCoordinates = toLonLat(features[i].geometry.coordinates);
+			const lonLatCoordinates = toLonLat(feature.geometry.coordinates);
 
 			record[lonKey] = lonLatCoordinates[0];
 			record[latKey] = lonLatCoordinates[1];
@@ -90,7 +76,7 @@ const FeaturesTable = () => {
 		}
 
 		return result;
-	}, [currentPage, groups]);
+	}, [groups]);
 
 	let toShow = true;
 	if (data.length === 0 || headers.length === 0) {
