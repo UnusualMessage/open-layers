@@ -183,10 +183,16 @@ class MapStore {
 
 			this.setOverlay(features[index]);
 
+			const coordinates = features[index].getGeometry().flatCoordinates;
+
 			view.animate({
-				center: features[index].getGeometry().flatCoordinates,
+				center: coordinates,
 				zoom: 18,
 				duration: 5000
+			}, {
+				center: coordinates,
+				zoom: 16,
+				duration: 2500
 			}, callback)
 		}
 
