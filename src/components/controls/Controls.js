@@ -1,9 +1,19 @@
 import css from "./controls.module.scss";
 
-const Controls = ({children}) => {
+import Switcher from "./Checkbox";
+import TableSwitcher from "./TableSwitcher";
+import Filter from "./Filter";
+import Paginator from "./Paginator/Paginator";
+import PresentationButton from "./PresentationButton";
+
+const Controls = () => {
 	return(
 		<div className={`${css.controls}`}>
-			{children}
+			<Switcher/>
+			<TableSwitcher/>
+			<Filter/>
+			<Paginator/>
+			<PresentationButton/>
 		</div>
 	)
 }
